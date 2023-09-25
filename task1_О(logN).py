@@ -18,5 +18,4 @@ def FindPick(vec):
                 return mid + 1
             continue
 
-
 print(FindPick(vec))
