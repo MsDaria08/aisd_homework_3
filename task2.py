@@ -9,6 +9,8 @@ def ToString(st):
     for el in range(len(st)):
         if st[el] not in "0123456789" and el != '[' and el != ']' and len(vec1) == 0:
            res += st[el]
+
+        #вынести в функцию
         if st[el] in "0123456789":
             num += int(st[el])
             if st[el + 1] in "0123456789":
@@ -36,25 +38,32 @@ def ToString(st):
         if el == len(st) - 1:
             return res
 
+def ch(st):
+    index = 0
+    while 1:
+        if st[index] not in "0123456789":
+            index += 1
+        else:
+            break
+    return(st[:index], st[index:])
 
-print(ToString(str))
-
-
-def ToString1(str):
-    num = ''
-    nums = []
-    values = []
-    res = ''
+def indexZak(st):
     ind = 0
-    for el in range(len(str)):
-        if str[el] not in "01234567890" and el != '[' and el != ']':
-            res += str[el]
-        if str[el] in "01234567890":
-            if str[el + 1] in "01234567890":
-                num += str[el]
-            else:
-                nums += int(num)
-                num = ''
+    cnt = 1
+    while cnt > 0:
+        ind += 1
+        if st[ind] == '[':
+            cnt += 1
+        if st[ind] == ']':
+            cnt -= 1
+    return ind
+def toString(st):
+    if '[' not in st:
+        return st
+    st = st.replace('[', ' ', 1)
+    index = indexZak(st)
+    st = st[:index] + ' ' + st[index + 1:]
+    tmp = st.split(' ')
+    return ch(tmp[0])[0] + int(ch(tmp[0])[1]) * toString(tmp[1]) + toString(tmp[2])
 
-
-
+print(toString(str))

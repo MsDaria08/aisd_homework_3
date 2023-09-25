@@ -1,22 +1,29 @@
 data = [197, 130, 1]
 
-def utf8(data):
-    value = []
-    for el in range(len(data)):
-        binary = ''
-        while data[el] > 0:
-            remainder = data[el] % 2
-            binary = str(remainder) + binary
-            data[el] = data[el] // 2
-        value.append(int(binary))
-    for el in value:
-        el = el % 100000000
-    for i in data:
-        s = str(data[i])
-        if len(s) == 1 and value[i] / 10**7 == 0:
-            continue
-        if len(s) == 2 and value[i] / 10**5 == 110:
-        if len(s) == 3 and value[i] / 10**7 == 0:
-        if len(s) == 4 and value[i] / 10**7 == 0:
+def toBin(value):
+    res = ''
+    while value > 0:
+        tmp = value % 2
+        res = str(tmp) + res
+        value = value // 2
+    return res
 
-utf8(data)
+def utf8(data):
+    res = [toBin(i).zfill(8) for i in data]
+    i = 0
+    while i + 1 <= len(data):
+        if res[i][0] == '0':
+            i += 1
+        elif i + 1 <= len(data) - 1 and res[i].startswith('0'):
+            i += 1
+        elif i + 2 <= len(data) - 1 and res[i].startswith('110') and res[i + 1].startswith('10'):
+            i += 2
+        elif i + 3 <= len(data) - 1 and res[i].startswith('1110') and res[i + 1].startswith('10') and res[i + 2].startswith('10'):
+            i += 3
+        elif i + 4 <= len(data) - 1 and res[i].startswith('11110') and res[i + 1].startswith('10') and res[i + 2].startswith('10') and res[i + 3].startswith('10'):
+            i += 4
+        else:
+            return 0
+    return 1
+
+print(utf8(data))
